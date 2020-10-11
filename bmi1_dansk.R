@@ -61,10 +61,8 @@ Dmale <- subset(D, gender == 1)
 
 ## Density histogrammer der beskriver den empiriske
 ## tæthed for BMI for hhv. kvinder og mænd
-hist(Dfemale$bmi,main = "Histogram of Density Females BMI", xlab="BMI (kvinder)", prob=TRUE)
-
-
-hist(Dmale$bmi, main = "Histogram of Density Males BMI", xlab="BMI (mænd)", prob=TRUE)
+hist(Dfemale$bmi,main = "Histogram of Density Females BMI", xlab="BMI (kvinder)", col = "red", prob=TRUE)
+hist(Dmale$bmi, main = "Histogram of Density Males BMI", xlab="BMI (mænd)", col = "blue" , prob=TRUE)
 
 
 ###########################################################################
@@ -72,7 +70,7 @@ hist(Dmale$bmi, main = "Histogram of Density Males BMI", xlab="BMI (mænd)", pro
 
 ## Boxplot af BMI opdelt efter køn
 boxplot(Dfemale$bmi, Dmale$bmi, names=c("Kvinder", "Mænd"), 
-        xlab="Køn", ylab="BMI")
+        xlab="Køn", col=c('red','blue'), ylab="BMI")
 
 
 ###########################################################################
@@ -81,10 +79,34 @@ boxplot(Dfemale$bmi, Dmale$bmi, names=c("Kvinder", "Mænd"),
 ## Antal observationer i alt
 ## (medregner ej eventuelle manglende værdier)
 sum(!is.na(D$bmi))
+## Antal observationer for kvinder
+sum(!is.na(Dfemale$bmi))
+## Antal observationer for mænd
+sum(!is.na(Dmale$bmi))
 ## Stikprøvegennemsnit (ej kønsopdelt)
 mean(D$bmi, na.rm=TRUE)
 ## Stikprøvevarians (ej kønsopdelt)
 var(D$bmi, na.rm=TRUE)
+## Stikprøvegennemsnit for kvinder
+mean(Dfemale$bmi, na.rm = TRUE)
+## Stikprøvevarians for kvinder
+var(Dfemale$bmi, na.rm = TRUE)
+## Stikprøvegennemsnit for mænd
+mean(Dmale$bmi, na.rm = TRUE)
+## Stikprøvevarians for mænd
+var(Dmale$bmi, na.rm = TRUE)
+## Standardafvigelse i alt
+sd (D$bmi)
+## Standardafvigelse for kvinder
+sd (Dfemale$bmi, na.rm = TRUE)
+## Standardafvigelse for mænd
+sd (Dmale$bmi, na.rm = TRUE)
+## Nedre Kvartil Øvre Kvartil og Median i alt
+summary(D$bmi)
+## Nedre Kvartil Øvre Kvartil og Median for kvinder
+summary(Dfemale$bmi)
+## Nedre Kvartil Øvre Kvartil og Median for mænd
+summary (Dmale$bmi)
 ## osv. 
 ##
 ## Argumentet 'na.rm=TRUE' sørger for at størrelsen
