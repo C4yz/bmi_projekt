@@ -37,7 +37,7 @@ str(D)
 ## Beregn BMI
 
 ## Beregn BMI og tilføj som ny variabel i D
-D$bmi <- D$weight/(D$height/100)^2
+Density_BMI <- D$weight/(D$height/100)^2
 
 
 ###########################################################################
@@ -45,7 +45,7 @@ D$bmi <- D$weight/(D$height/100)^2
 
 ## Histogram der beskriver den empiriske tæthed for BMI
 ## (histogram for BMI normaliseret så arealet er lig 1)
-hist(D$bmi, xlab="BMI", prob=TRUE)
+hist(Density_BMI, xlab="BMI", prob=TRUE)
 
 
 ###########################################################################
@@ -61,8 +61,10 @@ Dmale <- subset(D, gender == 1)
 
 ## Density histogrammer der beskriver den empiriske
 ## tæthed for BMI for hhv. kvinder og mænd
-hist(Dfemale$bmi, xlab="BMI (kvinder)", prob=TRUE)
-hist(Dmale$bmi, xlab="BMI (mænd)", prob=TRUE)
+hist(Dfemale$bmi,main = "Histogram of Density Females BMI", xlab="BMI (kvinder)", prob=TRUE)
+
+
+hist(Dmale$bmi, main = "Histogram of Density Males BMI", xlab="BMI (mænd)", prob=TRUE)
 
 
 ###########################################################################
