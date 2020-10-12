@@ -8,7 +8,7 @@ output:
     df_print: paged
 ---
 <center>
-<img src="https://i.imgur.com/mIFqWgX.png" alt="img" width="150" />
+![](C:/Users/Bruger/OneDrive/Skrivebord/Mapper/Billeder til BMI Projekt/DTU_Logo.png){width=150}
 
 </center>
 <br><br>
@@ -22,7 +22,7 @@ output:
 </center>
 <br>
 <center>
-<img src="https://www.dtubasen.dtu.dk/showimage.aspx?id=147951" alt="img" width="100"/>
+![](C:/Users/Bruger/OneDrive/Skrivebord/Mapper/Billeder til BMI Projekt/s195455.jpg){width=100}
 </center>
 <center>
 <b>Thomas Hohnen, s195455</b>
@@ -59,7 +59,7 @@ D$bmi <- D$weight/(D$height/100)^2
 hist(D$bmi, main = "Histogram of Density BMI", xlab="BMI", prob=TRUE)
 ```
 
-I det ovenstående histogram kan man se fordelingen af de forskellige BMI-værdier. Dette er et empirisk tæthedsdiagram som betyder at hvis alle arealerne af søjlerne bliver lagt sammen vil det give 1. Denne mængde af data er en højreskæv fordeling siden der går en lille hale ud mod højre side af histogrammet. Dette kan ses siden størstedelen af den grupperet data er omkring 25 og efter det kommer der en lille hale til højre. 
+I det ovenstående histogram kan man se fordelingen af de forskellige BMI-værdier. Dette er et empirisk tæthedsdiagram som betyder at hvis alle arealerne af søjlerne bliver lagt sammen vil det give 1. Denne mængde af data er en højreskæv fordeling, siden der går en lille hale ud mod højre side af histogrammet ud fra midten af histogrammet hvor den største del af data'et er gupperet.
 
 
 ### Opgave c
@@ -78,7 +78,7 @@ hist(Dfemale$bmi, main = "Histogram of Female BMI", xlab="BMI (kvinder)", col = 
 hist(Dmale$bmi, main = "Histogram of Male BMI", xlab="BMI (mænd)", col = "blue" , prob=TRUE)
 ```
 
-Hvis man først kigger på fordelingen over BMI for kvinder, kan man se at den ligner utroligt meget den samlede fordeling. Den er en smule forskudt men ellers er der stadig en symmetrisk fordeling. Dette er fordi størstedelen af observationerne ligger i midten og fordeler sig ud på begge sider. Når man kigger på fordelingen over BMI for mænd, er det en smule anderledes. Her er der ikke længere en symmetrisk fordeling men en skæv fordeling. Dette er fordi observationerne ikke fordeler sig lige på hver side af midten. Desuden kan det også ses at der er en forskel i mænd og kvinders BMI. Dette kan ses ved at BMI for kvinder har sit højdepunkt lige under 25 og begynder derfor at dykke hvilket giver den symmetriske fordeling. Hvorimod for mænd har den højdepunktet på 25 og begynder på at falde lidt men stiger igen med det samme. Dette betyder at kvinder generelt har en bedre BMI end mænd har. 
+Hvis man først kigger på fordelingen over BMI for kvinder, kan man se at den ligner utroligt meget den samlede fordeling. Den er en smule forskudt men ellers er der stadig en smule højreskev. Dette er fordi størstedelen af observationerne ligger i midten og fordeler sig ud på begge sider, men der kommer stadig en lille hale mod. Når man kigger på fordelingen over BMI for mænd, er det en smule anderledes. Her er der dog stadig tale om en højeskæv fordeling. Dette er fordi observationerne ikke fordeler sig lige på hver side af midten, men der igen kommer en lille hale mod højre side. Desuden kan det også ses at der er en forskel i mænd og kvinders BMI. Dette kan ses ved at BMI for kvinder har sit højdepunkt lige under 25 og begynder derfor at dykke. Hvorimod for mænd har den højdepunktet på 25 og begynder på at falde lidt men stiger igen med det samme. Dette betyder at kvinder generelt har en bedre BMI end mænd har. 
 
 ### Opgave d 
 *Lav et boksplot af BMI opdelt efter køn. Benyt derefter plottet for at beskrive den observerede fordeling af BMI for mænd og kvinder. Er fordelingerne symmetriske eller skæve? Ser det umiddelbart ud til at der er forskel mellem fordelingerne? Er der nogle ekstreme observationer? *
@@ -88,7 +88,7 @@ boxplot(Dfemale$bmi, Dmale$bmi, names=c("Kvinder", "Mænd"),
         xlab="Køn", col=c('red','blue'), ylab="BMI")
 ```
 
-I disse to plot kan man bedre se at BMI for mænd er generelt højere end at den er forkvinder som der også blev beskrevet i tidligere opgave. Man kan se på plottet for kvinder at det er en symmetrisk fordeling da medianen ligger ca. i midten af observationerne derudover kan man også se at fordelingen for mænd er skæv da medianen ikke ligger i midten. På disse 2 plots kan det også ses at der er nogle ekstreme observationer som ligger imellem 35-40 for både mænd og kvinder hvilket kunne have en effekt på det endelige Box plot. 
+I disse to plot kan man bedre se at BMI for mænd er generelt højere end at den er for kvinder som der også blev beskrevet i tidligere opgave. Hvis man nu kigger på plottet for kvinder kan man argumentere for at det denne gang er symmetirsk hvis man forkaster de ekstreme observationer. Dette kan man se på at middelværdien ligger tæt på midten og der er ca. lige meget data rundt om. Samtidigt kan man også sige at data'en for mænd ikke har ændret sig siden den stadig er højreskæv. På disse 2 plots kan det også ses at der er nogle ekstreme observationer som ligger imellem 35-40 for både mænd og kvinder hvilket kunne have en effekt på det endelige Box plot. 
 
 ### Opgave e
 *Udfyld tabellen med de opsummerende størrelser for BMI for hele stikprøven og derefter separat for mænd og kvinder. Beskriv hvilken ekstra information der kan udledes fra tabellen sammenlignet med boxplottet? *
@@ -144,4 +144,4 @@ Middelværiden blev tidligere regnet ud til: `r logmeanbmi`
 
 Dette gør at vores t-fordelings 97,5% kvartil til: `r qt(0.975, length(D$logbmi))`
 
-`r logmeanbmi` $\pm$ `r qt(0.975, length(D$logbmi))` 
+`r logmeanbmi` $\pm$ `r qt(0.975, length(D$logbmi))`
