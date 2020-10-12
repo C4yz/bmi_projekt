@@ -140,6 +140,8 @@ qqline(D$bmi)
 mean(D$logbmi)+(qt(0.975,length(D$logbmi)-1))*(sd(D$logbmi)/sqrt(145))
 mean(D$logbmi)-(qt(0.975,length(D$logbmi)-1))*(sd(D$logbmi)/sqrt(145))
 
+exp(mean(D$logbmi))
+
 exp(mean(D$logbmi)-(qt(0.975,length(D$logbmi)-1))*(sd(D$logbmi)/sqrt(145)))
 exp(mean(D$logbmi)+(qt(0.975,length(D$logbmi)-1))*(sd(D$logbmi)/sqrt(145)))
 
