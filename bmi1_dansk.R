@@ -7,6 +7,7 @@
 ## Bemærk: i R bruges kun "/" til separering i stier 
 ## (altså ingen backslash).
 setwd("C:\\Users\\bruger\\Desktop\\Mapper\\BMI Projekt\\bmi1")
+install.packages("rmarkdown")
 
 
 ###########################################################################
@@ -37,7 +38,7 @@ str(D)
 ## Beregn BMI
 
 ## Beregn BMI og tilføj som ny variabel i D
-Density_BMI <- D$weight/(D$height/100)^2
+D$bmi <- D$weight/(D$height/100)^2
 
 
 ###########################################################################
@@ -45,7 +46,7 @@ Density_BMI <- D$weight/(D$height/100)^2
 
 ## Histogram der beskriver den empiriske tæthed for BMI
 ## (histogram for BMI normaliseret så arealet er lig 1)
-hist(Density_BMI, xlab="BMI", prob=TRUE)
+hist(D$bmi, xlab="BMI", prob=TRUE)
 
 
 ###########################################################################
@@ -61,7 +62,7 @@ Dmale <- subset(D, gender == 1)
 
 ## Density histogrammer der beskriver den empiriske
 ## tæthed for BMI for hhv. kvinder og mænd
-hist(Dfemale$bmi,main = "Histogram of Density Females BMI", xlab="BMI (kvinder)", col = "red", prob=TRUE)
+hist(Dfemale$bmi, main = "Histogram of Density Females BMI", col = "red",xlab="BMI (kvinder)", prob=TRUE)
 hist(Dmale$bmi, main = "Histogram of Density Males BMI", xlab="BMI (mænd)", col = "blue" , prob=TRUE)
 
 
@@ -107,6 +108,9 @@ summary(D$bmi)
 summary(Dfemale$bmi)
 ## Nedre Kvartil Øvre Kvartil og Median for mænd
 summary (Dmale$bmi)
+
+quantile(Dfemale$bmi)
+quantile(Dmale$bmi)
 ## osv. 
 ##
 ## Argumentet 'na.rm=TRUE' sørger for at størrelsen
@@ -122,6 +126,22 @@ D$logbmi <- log(D$bmi)
 qqnorm(D$logbmi)
 qqline(D$logbmi)
 
+hist(D$logbmi, main = "Histogram of Log Normalfordeling BMI", xlab = "BMI", prob=TRUE, col = "pink")
+
+mean(D$logbmi)
+var(D$logbmi)
+
+mean(D$bmi)
+var(D$bmi)
+
+qqnorm(D$bmi)
+qqline(D$bmi)
+
+mean(D$logbmi)+(qt(0.975,length(D$logbmi)-1))*(sd(D$logbmi)/sqrt(145))
+mean(D$logbmi)-(qt(0.975,length(D$logbmi)-1))*(sd(D$logbmi)/sqrt(145))
+
+exp(mean(D$logbmi)-(qt(0.975,length(D$logbmi)-1))*(sd(D$logbmi)/sqrt(145)))
+exp(mean(D$logbmi)+(qt(0.975,length(D$logbmi)-1))*(sd(D$logbmi)/sqrt(145)))
 
 ###########################################################################
 ## T-test for en enkelt stikprøve
