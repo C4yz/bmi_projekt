@@ -137,11 +137,235 @@ Her kan det ses at QQ plottet følger en normalfordeling hvilket betydet at ud f
 ### Opgave g 
 *Angiv formlen for et 95% konfidensinterval for middelværiden af logoritmen til BMI for hele befolkningen. Indsæt tal og bereng intervallet. Angiv derefter et 95% konfidensinterval for medianen af BMI for hele befolkningen.*
 
-$\bar x \pm t_{0.975} \cdot \frac{\sigma}{\sqrt n}$
+$$\bar x \pm t_{0.975} \cdot \frac{\sigma}{\sqrt n}$$
+```{r include=FALSE}
+mean(D$logbmi)+(qt(0.975,length(D$logbmi)-1))*(sd(D$logbmi)/sqrt(145))
+mean(D$logbmi)-(qt(0.975,length(D$logbmi)-1))*(sd(D$logbmi)/sqrt(145))
 
+exp(mean(D$logbmi))
+```
 
 Middelværiden blev tidligere regnet ud til: `r logmeanbmi`
 
 Dette gør at vores t-fordelings 97,5% kvartil til: `r qt(0.975, length(D$logbmi))`
 
-`r logmeanbmi` $\pm$ `r qt(0.975, length(D$logbmi))`
+$$ 3.28 \pm 1.977 \cdot \frac{0.149}{\sqrt{145}} $$
+Hvilket giver resultatet: 
+$$[3.24,3.19]$$
+### Opgave h 
+*Udfør en hypotese test med henblik på at undersøge, om middelværdien af logoritmen til BMI er forsekllige fra log(25). Dette kan gøres ved at teste følgende hypotese: *
+
+$$H_0 : \mu logBMI = Log(25) $$
+$$H_1 : \mu logBMI \not= Log(25) $$
+```{r include=FALSE}
+n <- length(D$logbmi)
+## t værdien bliver beregnet
+tobs <- ((mean(D$logbmi)-log(25))/(sd(D$logbmi)/sqrt(n)))
+## beregner p-værdien
+pvalue <- 2 * (1-pt(abs(tobs), df=n-1))
+pvalue
+```
+
+Først bliver de formler skrevet op som der skal bruges til at teste vores hypotese: 
+
+$$ t_{obs}: \frac { \bar x - \mu_0} {s/ \sqrt{n}} $$
+
+$$ \textrm{p-værdi}: 2 \cdot P(T>|t_{obs}|) $$
+Herefter bliver de vores data sat ind i formlerne for at kunne regne begynde at påvise vores null hypotese. Først bliver teststørelsen fundet. Først bliver der fundet teststørelsen: 
+
+$$t{\mathrm{obs}}=\frac{3.22-log(25)}{0.15 / \sqrt{145}}=-0.09$$
+Herefter kan der nu blive regnet på p-værdien:
+
+$$ \textrm{p-værdi}: 2 \cdot P(T>|-0.09|) = 0.92 $$
+Dette betyder at vi ikke forkaster vores nulhupotese siden den er over vores signifikans niveau (5). Dog skal det også siges at p-værdien er meget høj i forhold til hvad man normalt ender med og der er meget lidt bevis mod H0. Desuden kan der ikke konkluderes at over halvdelen af befolkningen er overvægtig.
+
+### Opgave i
+*Angiv statistiske modeller for logoritmen til BMI for hendholdsvis kvinder og mænd. Fortag modelkontrol af de antagede forudsætninger i de to modeller. Estimer modellens parametre.*
+
+```{r include=FALSE}
+Dmale$logbmi <- log(Dmale$bmi)
+Dfemale$logbmi <- log(Dfemale$bmi)
+
+meanMaleLogBMI <- mean(Dmale$logbmi)
+meanFemaleLogBMI <- mean(Dfemale$logbmi)
+varMaleLogBMI <- var(Dmale$logbmi)
+varFemaleLogBMI <- var(Dfemale$logbmi)
+```
+
+Først bliver der lavet de to forskellige statistiske modeller. En for kvinder og en for mænd. Først for kvinder:
+
+$$X_i \sim LN(3.174,0.0255) \textrm{ and i.i.d where }  i=1,....,n$$
+Derefter for mænd:
+$$X_i \sim LN(3.260,0.0153) \textrm{ and i.i.d where }  i=1,....,n$$
+
+Herefter er der blevet lavet 4 forskellige qq plot. Dette vil hjælpe os med at se om vores statistiske model passer. Der er først blevet lavet for mænd og derefter kvinder.
+
+```{r echo=FALSE}
+## Først bliver der lavet 2 nye variabler. logmaleBMI og logfemaleBMI
+layout(matrix(c(1,2), 1,2))
+
+qqnorm(Dmale$logbmi, main = "Log BMI for mænd")
+qqline(Dmale$logbmi)
+
+qqnorm(Dmale$bmi, main = "BMI for mænd")
+qqline(Dmale$bmi)
+
+layout(matrix(c(1,2), 1,2))
+
+qqnorm(Dfemale$logbmi, main = "Log BMI for kvinder")
+qqline(Dfemale$logbmi)
+
+qqnorm(Dfemale$logbmi, main = "BMI for kvinder")
+qqline(Dfemale$logbmi)
+
+```
+
+Her kan vi se at normalfordelingen får både mænd og kvinder er blevet mere symmetirks end en den logoritmiske fordeling for hhv. mænd og kvinder. Dette kan man også se hvad at kigge på de ekstreme variabler som ikke længere er helt så ekstreme som de var før. Der ligger også nogle histogrammer i Bilag hvor man kan se at den at den er blevet mere klokke formet end det var før. 
+
+### Opgave j 
+*Beregn 95% konfidensintervaller for middelværdien af logoritmen til BMI for hhv mænd og kvinder. Benyt disse til at bestemme 95% konfidensintervaller for median af BMI for hhv mænd og kvinder. Udfyld tabellen.*
+
+Middelværdien blev regnet ud i tidligere opgave for både mænd og kvinder. Først bliver der kigget på mænds konfidensinterval: 
+
+$$ 3.26 \pm 1.99 \cdot \frac{0.12}{\sqrt{73}} $$
+Herefter oplyfter vi hele resultatet i e hvilket giver: 
+$$ [25.32;26.82] $$
+
+Derefter for kvinder: 
+$$ 3.17 \pm 1.99 \cdot \frac{0.16}{\sqrt{72}} $$
+Hvor man igen oplyfter hele resultatet i e hvilket giver:
+$$ [23.02;24.82] $$
+Herefter kan de forskellige konfidensintervalls værdier blive sat ind i en tabel. 
+
+```{r include=FALSE}
+sd(Dmale$logbmi)
+length(Dmale$logbmi)
+
+sd(Dfemale$logbmi)
+length(Dfemale$logbmi)
+
+## interval for mænd
+PlusMale <- mean(Dmale$logbmi)+(qt(0.975,length(Dmale$logbmi)-1))*(sd(Dmale$logbmi)/sqrt(length(Dmale$logbmi)))
+MinusMale <- mean(Dmale$logbmi)-(qt(0.975,length(Dmale$logbmi)-1))*(sd(Dmale$logbmi)/sqrt(length(Dmale$logbmi)))
+
+PlusMale
+MinusMale
+
+exp(PlusMale)
+exp(MinusMale)
+
+##interval for kvinder 
+PlusFemale <- mean(Dfemale$logbmi)+(qt(0.975,length(Dfemale$logbmi)-1))*(sd(Dfemale$logbmi)/sqrt(length(Dfemale$logbmi)))
+MinusFemale <- mean(Dfemale$logbmi)-(qt(0.975,length(Dfemale$logbmi)-1))*(sd(Dfemale$logbmi)/sqrt(length(Dfemale$logbmi)))
+
+PlusFemale
+MinusFemale
+
+exp(PlusFemale)
+exp(MinusFemale)
+
+qt(0.975, length(Dfemale$logbmi)-1)
+qt(0.975, length(Dmale$logbmi)-1)
+
+```
+|         | Nedre grænse af KI | Øvre grønse af KI |
+| ------- | ------------------ | ----------------- |
+| Kvinder | 23.02              | 24.82             |
+| Mænd    | 25.32              | 26.83             |
+
+### Opgave k
+*Undersøg ved en hypotesetest, om der kan påvises en forskel på mænd og kvinders BMI. Opskriv hypotesen og angiv signifikansniveauet, formlen for teststørelsen, samt teststørelsens fordeling. Indsæt tal, og bereng teststørelsen og p-værdien*
+
+Dette skal gøres ved at ved at tage differancen mellem de to BMI grupper som i dette tilfælde ikke er paret. Dette er fordi grupperne ikke har noget med hindanden at gøre. 
+
+Her er den første formel der skal bruges:
+$$t{\text {obs }}=\frac{\left(\bar{x}{1}-\bar{x}{2}\right)-\delta{0}}{\sqrt{s{1}^{2} / n{1}+s{2}^{2} / n{2}}}$$
+Dette giver resultatet: 
+$$t{\text {obs }}=3.637$$
+
+Herefter den anden formel: 
+$$v=\frac{\left(\frac{s{1}^{2}}{n{1}}+\frac{s{2}^{2}}{n{2}}\right)^{2}}{\frac{\left(s{1}^{2} / n{1}\right)^{2}}{n{1}-1}+\frac{\left(s{2}^{2} / n{2}\right)^{2}}{n{2}-1}}$$
+Dette giver resultatet:
+$$v=133.75$$
+Når disse tal så er blevet regnet ud. Bliver det sat ind i den følgende formel: 
+$$ \textrm{p-værdi}: 2 \cdot P(T>|t_{obs}|) $$
+$$ \textrm{p-værdi}: 2 \cdot P(T>|3.637|) = 0.00039 $$
+Dette betyder at vores nul hypotese ikke kan bekraftes og derfor bliver den forkastet. Desuden definere v antallet af vores frihedsgrader og bliver derfor brugt til at regne p-værdien ud i r. 
+```{r include=FALSE}
+sdMaleLogBMI <- sd(Dmale$logbmi)
+sdFemaleLogBMI <- sd(Dfemale$logbmi)
+
+tobs <- abs(((meanMaleLogBMI-meanFemaleLogBMI)-0)/(sqrt((sdMaleLogBMI^2/length(Dmale$logbmi))+(sdFemaleLogBMI^2/length(Dfemale$logbmi)))))
+
+v <- ((sdMaleLogBMI^2/length(Dmale$logbmi))+(sdFemaleLogBMI^2/length(Dfemale$logbmi)))^2/(((sdMaleLogBMI^2/length(Dmale$logbmi))^2/(length(Dmale$logbmi)-1))+((sdFemaleLogBMI^2/length(Dfemale$logbmi))^2/(length(Dfemale$logbmi)-1)))
+
+tobs
+v
+
+2*(1-pt(tobs, v))
+
+```
+
+### Opgave l
+*Kommenter om det er nødvendigt at udfører en hypotesetest i det forrige spørgsmål, eller den samme konklusion kunne opnås ud fra konfidensintervallerne alene?*
+
+Ja det ville man godt kunne sige ud fra konfidensintervallerne alene. Dette er fordi hvis man kigger på det laveste inteveste interval for mænd er det stadig højere end det højeste interval for kvinder. Dette betyder at man kan konkludere at der ikke er nogen overlapning mellem mænd og kvinders BMI. 
+
+```{r}
+
+```
+
+## Korrelation 
+
+### Opgave m
+*Angiv formlen til beregning af korrelation mellem BMI og vægt. indsæt tal og bereng korrelation. Beregen desuden de resterende parvise korrelationer, der indvoldvere BMI, vægt og fastfood. Lav scatterplots, der illustrer de parvise sammenhænge mellem disse variable. Vurder om sammenhængden mellem plots og korrelation er forsvundet.*
+
+Der skal bruges nogle forskellige formler til at renge det ud. Den første er kovariansen: 
+$$ s_{x y}=\frac{1}{n-1} \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right) $$
+Den anden er korrelationskeoficient: 
+$$ r=\frac{1}{n-1} \sum_{i=1}^{n}\left(\frac{x_{i}-\bar{x}}{s_{x}}\right)\left(\frac{y_{i}-\bar{y}}{s_{y}}\right)=\frac{s_{x y}}{s_{x} \cdot s_{y}} $$
+```{r include=FALSE}
+Kovarians_bmiWeight <- 1/(length(D$bmi)-1)*sum((D$bmi-mean(D$bmi))*(D$weight-mean(D$weight)))
+Kovarians_bmiWeight
+
+Korrelationskeoficient_bmiWeight <- Kovarians_bmiWeight/(sd(D$bmi)*sd(D$weight))
+Korrelationskeoficient_bmiWeight
+
+Kovarians_bmifast <- 1/(length(D$bmi)-1)*sum((D$bmi-mean(D$bmi))*(D$fastfood-mean(D$fastfood)))
+Kovarians_bmifast
+
+Korrelationskeoficient_bmifast <- Kovarians_bmifast/(sd(D$bmi)*sd(D$fastfood))
+Korrelationskeoficient_bmifast
+
+Kovarians_weightfast <- 1/(length(D$weight)-1)*sum((D$weight-mean(D$weight))*(D$fastfood-mean(D$fastfood)))
+Kovarians_weightfast
+
+Korrelationskeoficient_weightfast <- Kovarians_weightfast/(sd(D$weight)*sd(D$fastfood))
+Korrelationskeoficient_weightfast
+```
+
+```{r echo=FALSE}
+layout(matrix(c(1,2,3), 1,3))
+
+plot(D$bmi, D$weight, main = "Plot Between BMI and Weight", xlab="BMI", ylab = "Weight", pch = 19, frame = FALSE)
+plot(D$bmi, D$fastfood, main = "Plot Between BMI and Fastfood", xlab="BMI", ylab = "Fastfood", pch = 19, frame = FALSE)
+plot(D$weight, D$fastfood, main = "Plot Between Weight and Fastfood", xlab="Weight", ylab = "Fastfood", pch = 19, frame = FALSE)
+```
+Som man kan se på de 3 plot der er blevet lavet er der kun en korrelation mellem Vægt og BMI dette kan man også se hvis man regner tallene ud med de 2 ovenstående formler. Hvis man gør det får man følgende:
+
+Korrelationskeoficient mellem BMI og Vægt:
+$$0.828261$$
+Korrelationskeoficient mellem BMI og Fastfood:
+$$0.1531578$$
+Korrelationskeoficient mellem Vægt og Fastfood:
+$$0.2793223$$
+Dette gør så at vi kan se at det er en sammenhæng mellem BMI og vægt fordi den er tæt på 1 hvorimod de andre er tættere på 0.
+
+
+### Bilag
+
+```{r echo=FALSE}
+layout(matrix(c(1,2), 1,2))
+hist(Dfemale$logbmi, main="Histogram of female log-BMI", xlab="log-BMI", prob=TRUE, col="red")
+hist(Dmale$logbmi, main="Histogram of male log-BMI", xlab="log-BMI", prob=TRUE, col="blue")
+```

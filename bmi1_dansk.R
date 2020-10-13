@@ -145,8 +145,15 @@ exp(mean(D$logbmi))
 exp(mean(D$logbmi)-(qt(0.975,length(D$logbmi)-1))*(sd(D$logbmi)/sqrt(145)))
 exp(mean(D$logbmi)+(qt(0.975,length(D$logbmi)-1))*(sd(D$logbmi)/sqrt(145)))
 
+mean(Dmale$logbmi)+(qt(0.975,length(Dmale$logbmi)-1))*(sd(Dmale$logbmi)/sqrt(145))
+mean(Dmale$logbmi)-(qt(0.975,length(Dmale$logbmi)-1))*(sd(Dmale$logbmi)/sqrt(145))
+
 ###########################################################################
 ## T-test for en enkelt stikprøve
+
+sd(D$logbmi)
+
+t.test(D$logbmi, mu=log(25))
 
 ## T-test for en enkelt stikprøve foretaget på log-transformeret BMI
 t.test(D$logbmi, mu=log(25))
