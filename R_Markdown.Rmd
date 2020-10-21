@@ -3,9 +3,9 @@ title: "BMI Projekt Statistik"
 author: ''
 date: ''
 output:
+  pdf_document: default
   html_document:
     df_print: paged
-  pdf_document: default
 ---
 ```{r, echo=FALSE,fig.align='center',out.width="25%"}
 knitr::include_graphics("dtu.png")
@@ -22,7 +22,7 @@ knitr::include_graphics("dtu.png")
 \end{center} 
 \bigskip
 \begin{center} 
-r format(Sys.Date(), "%d.%B.%Y")
+`r format(Sys.Date(), "%d.%B.%Y")`
 \end{center} 
 
 
@@ -37,12 +37,18 @@ knitr::include_graphics("s195455.jpg")
 Thomas Hohnen, s195455
 \end{center} 
 
+\pagebreak
+
 ```{r include=FALSE}
 ## I RStudio kan man nemt sætte working directory med menuen
 ## "Session -> Set Working Directory -> To Source File Location"
 ## Bemærk: i R bruges kun "/" til separering i stier
 ## (altså ingen backslash).
-setwd("C:\\Users\\bruger\\Desktop\\Mapper\\BMI Projekt\\bmi1")
+setwd("C:\\Users\\Bruger\\OneDrive\\Skrivebord\\Mapper\\BMI_Projekt\\bmi_projekt")
+
+library("dplyr")
+library("ggplot2")
+
 D <- read.table("bmi1_data.csv", header=TRUE, sep=";", as.is=TRUE)
 ```
 
@@ -191,6 +197,7 @@ tobs <- ((mean(D$logbmi)-log(25))/(sd(D$logbmi)/sqrt(n)))
 pvalue <- 2 * (1-pt(abs(tobs), df=n-1))
 pvalue
 ```
+For at løse denne opgave skal der testes om vores nul hypotese passer. Dette bliver gjort ved først at finde vores t-test størelse og derefter kan p-værdien blive regnet ud. Hvis vores p-værdi ender med at være over 5% acceptere vi vores null hypotese, altå er vores signifikansniveau på 0,05. Hvis ikke det er sagen bliver den forkaster frem for den anden hypotese.
 
 Først bliver de formler skrevet op som der skal bruges til at teste vores hypotese: 
 
@@ -202,8 +209,10 @@ Herefter bliver de vores data sat ind i formlerne for at kunne regne begynde at 
 $$t{\mathrm{obs}}=\frac{3.22-log(25)}{0.15 / \sqrt{145}}=-0.09$$
 Herefter kan der nu blive regnet på p-værdien:
 
-$$ \textrm{p-værdi}: 2 \cdot P(T>|-0.09|) = 0.92 $$
-Dette betyder at vi ikke forkaster vores nulhupotese siden den er over vores signifikans niveau (5). Dog skal det også siges at p-værdien er meget høj i forhold til hvad man normalt ender med og der er meget lidt bevis mod H0. Desuden kan der ikke konkluderes at over halvdelen af befolkningen er overvægtig.
+$$ \textrm{p-værdi}: 2 \cdot P(T>|t_{o b s}|) = 2 \cdot\left(1-F\left(\left|t_{o b s}\right|\right)\right)=0.92 $$
+Her skal der efterfølgende blive sat de rigtige tal ind. Vores t værdi er som altid $n-1$ hvilket gør at vi herefter kan udregne vores tal gennem R.
+
+Dette betyder at vi ikke forkaster vores nulhupotese siden vores p værdi er over vores signifikansniveau. Dog skal det også siges at p-værdien er meget høj i forhold til hvad man normalt ender med og der er meget lidt bevis mod H0. Dette betyder at der heller ikke kan konkluderes at overhalvdelen er overvægtig siden man først er overvægtig hvis man har en BMI på over 25. Det eneste som der er kokluderet her er at middelværdien for logBMI er ikke er forskellige fra log(25) og ikke om det var en overvægt af folk med BMI på 25.
 
 ### Opgave i
 *Angiv statistiske modeller for logoritmen til BMI for hendholdsvis kvinder og mænd. Fortag modelkontrol af de antagede forudsætninger i de to modeller. Estimer modellens parametre.*
@@ -217,8 +226,9 @@ meanFemaleLogBMI <- mean(Dfemale$logbmi)
 varMaleLogBMI <- var(Dmale$logbmi)
 varFemaleLogBMI <- var(Dfemale$logbmi)
 ```
+For at løse denne opgave skal der først blive skrevet de 2 statisktiske modeller op for hhv mænd og kvinder. Herefter vil der blive lavet 2 forsekellige qqplots for både logBMI af kvinder og mænd men også den normale BMI af kvinder og mænd. For at få udfyldt disse statiskemodeller med de relevente tal bliver der gjort brug af R for at vinde hhv middelværdig og varians for kvinder og mænd. Disse tal bliver sat ind på $\alpha$ og $\beta$ pladserne. 
 
-Først bliver der lavet de to forskellige statistiske modeller. En for kvinder og en for mænd. Først for kvinder:
+Først for den statistiske model for kvinder:
 
 $$X_i \sim LN(3.174,0.0255) \textrm{ and i.i.d where }  i=1,....,n$$
 Derefter for mænd:
@@ -246,7 +256,7 @@ qqline(Dfemale$logbmi)
 
 ```
 
-Her kan vi se at normalfordelingen får både mænd og kvinder er blevet mere symmetirks end en den logoritmiske fordeling for hhv. mænd og kvinder. Dette kan man også se hvad at kigge på de ekstreme variabler som ikke længere er helt så ekstreme som de var før. Der ligger også nogle histogrammer i Bilag hvor man kan se at den at den er blevet mere klokke formet end det var før. 
+Her kan vi se at normalfordelingen får både mænd og kvinder er blevet mere symmetirks end en den logoritmiske fordeling for hhv. mænd og kvinder. Dette kan man også se hvad at kigge på de ekstreme variabler som ikke længere er helt så ekstreme som de var før. Dette kan man tydeligt se hvad at kigge på den linje der føljer hvert plots som repræsentere den "perfekte" normalfordeling. Der ligger også nogle histogrammer i Bilag hvor man kan se at den at den er blevet mere klokke formet end det var før. 
 
 ### Opgave j 
 *Beregn 95% konfidensintervaller for middelværdien af logoritmen til BMI for hhv mænd og kvinder. Benyt disse til at bestemme 95% konfidensintervaller for median af BMI for hhv mænd og kvinder. Udfyld tabellen.*
@@ -302,21 +312,26 @@ qt(0.975, length(Dmale$logbmi)-1)
 ### Opgave k
 *Undersøg ved en hypotesetest, om der kan påvises en forskel på mænd og kvinders BMI. Opskriv hypotesen og angiv signifikansniveauet, formlen for teststørelsen, samt teststørelsens fordeling. Indsæt tal, og bereng teststørelsen og p-værdien*
 
-Dette skal gøres ved at ved at tage differancen mellem de to BMI grupper som i dette tilfælde ikke er paret. Dette er fordi grupperne ikke har noget med hindanden at gøre. 
+Det første der skal gøres er at opstille vores hypotese test. Hvor vi også beslutter at vores signifikansniveau er på 5%.
+
+$$H_{0}: \mu_{1}-\mu_{2}=0$$
+$$H_{1}: \mu{1}-\mu{2}\not= 0$$
+
+Disse 2 hypoteser er opsat sådan pga. de 2 grupper ikke har noget af gøre med hindanen. Altså hvis de 2 middelværdier trukket fra hindanden er lige med nul er der en sammenhæng hvis ikke er der ingen. Det første der skal gøres er at sætte de forskellige formler op der skal bruges.
 
 Her er den første formel der skal bruges:
 $$t{\text {obs }}=\frac{\left(\bar{x}{1}-\bar{x}{2}\right)-\delta{0}}{\sqrt{s{1}^{2} / n{1}+s{2}^{2} / n{2}}}$$
 Dette giver resultatet: 
 $$t{\text {obs }}=3.637$$
 
-Herefter den anden formel: 
+Herefter den anden formel som skal bruges til at beregne vores antal af frihedsgrader: 
 $$v=\frac{\left(\frac{s{1}^{2}}{n{1}}+\frac{s{2}^{2}}{n{2}}\right)^{2}}{\frac{\left(s{1}^{2} / n{1}\right)^{2}}{n{1}-1}+\frac{\left(s{2}^{2} / n{2}\right)^{2}}{n{2}-1}}$$
 Dette giver resultatet:
 $$v=133.75$$
 Når disse tal så er blevet regnet ud. Bliver det sat ind i den følgende formel: 
-$$ \textrm{p-værdi}: 2 \cdot P(T>|t_{obs}|) $$
+$$ p \text { -vardi }=2 \cdot P\left(T>\left|t_{\text {obs }}\right|\right)=2 \cdot\left(1-F\left(\left|t_{\text {obs }}\right|\right)\right)=3.92 \times 10^{-4} $$
 $$ \textrm{p-værdi}: 2 \cdot P(T>|3.637|) = 0.00039 $$
-Dette betyder at vores nul hypotese ikke kan bekraftes og derfor bliver den forkastet. Desuden definere v antallet af vores frihedsgrader og bliver derfor brugt til at regne p-værdien ud i r. 
+Dette betyder at vores nul hypotese ikke kan bekraftes og derfor bliver den forkastet siden vores p-værdi er under vores signifikansniveau. Desuden definere v antallet af vores frihedsgrader og bliver derfor brugt til at regne p-værdien ud i R. 
 ```{r include=FALSE}
 sdMaleLogBMI <- sd(Dmale$logbmi)
 sdFemaleLogBMI <- sd(Dfemale$logbmi)
@@ -355,12 +370,16 @@ bmiPlot <- ggplot(bmiData, aes(x=gender, y=meanbmi, fill=gender)) +
 bmiPlot
 ```
 
+I det ovenstående diagram kan man meget tydeligt se at den forrige hypotese test ikke var nødvendig at udregne. Dette er fordi man kan se at de 2 konfidensintervaller aldrig kommer til at overlappe hindanden derfor kan der konkluderes at der ikke er nogen overlapning af mænds eller kvinders BMI. 
+
 ## Korrelation 
 
 ### Opgave m
 *Angiv formlen til beregning af korrelation mellem BMI og vægt. indsæt tal og bereng korrelation. Beregen desuden de resterende parvise korrelationer, der indvoldvere BMI, vægt og fastfood. Lav scatterplots, der illustrer de parvise sammenhænge mellem disse variable. Vurder om sammenhængden mellem plots og korrelation er forsvundet.*
 
-Der skal bruges nogle forskellige formler til at renge det ud. Den første er kovariansen: 
+For at løse denne opgaver skal der bruges 2 forskellige formler. Først en til at regne Kovarians ud og derefter en til at regne korrelationskoeficient ud. 
+
+Den første er kovariansen: 
 $$ s_{x y}=\frac{1}{n-1} \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right) $$
 Den anden er korrelationskeoficient: 
 $$ r=\frac{1}{n-1} \sum_{i=1}^{n}\left(\frac{x_{i}-\bar{x}}{s_{x}}\right)\left(\frac{y_{i}-\bar{y}}{s_{y}}\right)=\frac{s_{x y}}{s_{x} \cdot s_{y}} $$
