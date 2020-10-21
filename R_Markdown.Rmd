@@ -3,37 +3,46 @@ title: "BMI Projekt Statistik"
 author: ''
 date: ''
 output:
-  pdf_document: default
   html_document:
     df_print: paged
+  pdf_document: default
 ---
-<center>
-![](C:/Users/Bruger/OneDrive/Skrivebord/Mapper/Billeder til BMI Projekt/DTU_Logo.png){width=150}
+```{r, echo=FALSE,fig.align='center',out.width="25%"}
+knitr::include_graphics("dtu.png")
+```
 
-</center>
-<br><br>
-<center><font size="6">Danmark Tekniske Universitet</font></center>
+\bigskip
 
+\begin{center} 
+{\huge Danmark Tekniske Universitet}
+\end{center} 
 ***
+\begin{center} 
+{\huge 02323 Introduktion til statistik}
+\end{center} 
+\bigskip
+\begin{center} 
+r format(Sys.Date(), "%d.%B.%Y")
+\end{center} 
 
-<center><font size="6">02323 Introduktion til statistik</font></center>
-<center>
-`r format(Sys.Date(), "%d.%B.%Y")`
-</center>
-<br>
-<center>
-![](C:/Users/Bruger/OneDrive/Skrivebord/Mapper/Billeder til BMI Projekt/s195455.jpg){width=100}
-</center>
-<center>
-<b>Thomas Hohnen, s195455</b>
-</center>
+
+
+
+```{r, echo=FALSE,fig.align='center',out.width="25%"}
+knitr::include_graphics("s195455.jpg")
+```
+
+
+\begin{center} 
+Thomas Hohnen, s195455
+\end{center} 
 
 ```{r include=FALSE}
 ## I RStudio kan man nemt sætte working directory med menuen
 ## "Session -> Set Working Directory -> To Source File Location"
 ## Bemærk: i R bruges kun "/" til separering i stier
 ## (altså ingen backslash).
-setwd("C:\\Users\\Bruger\\OneDrive\\Skrivebord\\Mapper\\BMI_Projekt\\bmi_projekt")
+setwd("C:\\Users\\bruger\\Desktop\\Mapper\\BMI Projekt\\bmi1")
 D <- read.table("bmi1_data.csv", header=TRUE, sep=";", as.is=TRUE)
 ```
 
@@ -59,7 +68,7 @@ D$bmi <- D$weight/(D$height/100)^2
 hist(D$bmi, main = "Histogram of Density BMI", xlab="BMI", prob=TRUE)
 ```
 
-I det ovenstående histogram kan man se fordelingen af de forskellige BMI-værdier. Dette er et empirisk tæthedsdiagram som betyder at hvis alle arealerne af søjlerne bliver lagt sammen vil det give 1. Denne mængde af data er en højreskæv fordeling, siden der går en lille hale ud mod højre side af histogrammet ud fra midten af histogrammet hvor den største del af data'et er gupperet.
+I det ovenstående histogram kan man se fordelingen af de forskellige BMI-værdier. Dette er et empirisk tæthedsdiagram som betyder at hvis alle arealerne af søjlerne bliver lagt sammen vil det give 1. Denne mængde af data er en højreskæv fordeling, siden der går en lille hale ud mod højre side af histogrammet ud fra midten af histogrammet hvor den største del af data'et er gupperet.For at den skulle være symetrisk skulle alt data være centreret omkring vores middelværdi. Når man kigge på dette histogram kender vi ikke den præcise middelværdi men det kan ses at det ligger omkring 20-25 da det er der vores data er grupperet.
 
 
 ### Opgave c
@@ -78,7 +87,7 @@ hist(Dfemale$bmi, main = "Histogram of Female BMI", xlab="BMI (kvinder)", col = 
 hist(Dmale$bmi, main = "Histogram of Male BMI", xlab="BMI (mænd)", col = "blue" , prob=TRUE)
 ```
 
-Hvis man først kigger på fordelingen over BMI for kvinder, kan man se at den ligner utroligt meget den samlede fordeling. Den er en smule forskudt men ellers er der stadig en smule højreskev. Dette er fordi størstedelen af observationerne ligger i midten og fordeler sig ud på begge sider, men der kommer stadig en lille hale mod. Når man kigger på fordelingen over BMI for mænd, er det en smule anderledes. Her er der dog stadig tale om en højeskæv fordeling. Dette er fordi observationerne ikke fordeler sig lige på hver side af midten, men der igen kommer en lille hale mod højre side. Desuden kan det også ses at der er en forskel i mænd og kvinders BMI. Dette kan ses ved at BMI for kvinder har sit højdepunkt lige under 25 og begynder derfor at dykke. Hvorimod for mænd har den højdepunktet på 25 og begynder på at falde lidt men stiger igen med det samme. Dette betyder at kvinder generelt har en bedre BMI end mænd har. 
+Hvis man først kigger på fordelingen over BMI for kvinder, kan man se at den ligner utroligt meget den samlede fordeling. Den er en smule forskudt men ellers er der stadig en smule højreskev. Dette er fordi størstedelen af observationerne ligger i midten og fordeler sig ud på begge sider, men der kommer stadig en lille hale mod højre. Når man kigger på fordelingen over BMI for mænd, er det en smule anderledes. Her er der dog stadig tale om en højeskæv fordeling. Dette er fordi observationerne ikke fordeler sig lige på hver side af midten, men der igen kommer en lille hale mod højre side. Desuden kan det også ses at der er en forskel i mænd og kvinders BMI. Dette kan ses ved at BMI for kvinder har sit højdepunkt lige under 25 og begynder derfor at dykke. Hvorimod for mænd har den højdepunktet på 25 og begynder på at falde lidt men stiger igen med det samme. Dette betyder at kvinder generelt har en bedre BMI end mænd har. 
 
 ### Opgave d 
 *Lav et boksplot af BMI opdelt efter køn. Benyt derefter plottet for at beskrive den observerede fordeling af BMI for mænd og kvinder. Er fordelingerne symmetriske eller skæve? Ser det umiddelbart ud til at der er forskel mellem fordelingerne? Er der nogle ekstreme observationer? *
@@ -100,6 +109,8 @@ Variabel|Antal obs.|Stikprøve- gennemsnit|Stikprøve- varians|stikprøve- stand
 |Kvinder|72|24,22|16,42|4,05|21,26|23,69|26,29|
 |Mænd|73|26,27|11,07|3,33|24,15|25,73|28,63|
 
+Der er nogle forskellige informationer som denne tabel giver i stedet for at kigge på vores boxplot. Som udgangspunkt gælder vores boxsplots informationer kun for de følgende kvartiller: 0, 25, 50, 75 og 100. Boxplottet er rigtig god til at se hvordan vores data er spredt ud over hele datasættet omkring vores middelævrdi. Dog siger vores boxsplot ikke noget omkring vores varians, spredning, gennemsnit og den samlede antal af obsevertioner. Det eneste som vi kan se når det kommer til antal observationer er at der ca. er taget lige mange observationer for hhv mænd og kvinder. 
+
 ## Statistisk Analyse
 
 ### Opgave f
@@ -116,14 +127,14 @@ D$logbmi <- log(D$bmi)
 qqnorm(D$logbmi, main = "Logoritmisk Normalfordeling af BMI")
 qqline(D$logbmi)
 ```
-Den ovenstående graf hviser den logaritmiske normalfordeling af BMI værdierne. Ud fra dette kan vi se at den data der er blevet taget passer meget bedre nu til en normalfordeling. Dette betyder også er fordelingen til deisse observationer vil nu være symetrisk og ikke længere højreskæv. 
+Den ovenstående graf hviser den logaritmiske normalfordeling af BMI værdierne. Ud fra dette kan vi se at den data der er blevet taget passer meget bedre nu til en normalfordeling. Dette betyder også er fordelingen til disse observationer vil nu være symetrisk og ikke længere højreskæv. 
 
 For at regne varians og middelværdi ud er der blevet tage brug af kommandoerne "var" og "mean" i r. Herefter er disse tal blevet sat ind i den statistiske model.
 ```{r include=FALSE}
 logvarbmi<-var(D$logbmi)
 logmeanbmi<-mean(D$logbmi)
 ```
-
+$$ \mu \space log(bmi)=3.218,\space \sigma \space log(bmi)=0.022 $$
 $X_i \sim LN($ `r logmeanbmi`,`r logvarbmi`) $and$ $i.i.d$ $where$ $i=1,....,n$
 
 ```{r echo=FALSE}
@@ -137,21 +148,36 @@ Her kan det ses at QQ plottet følger en normalfordeling hvilket betydet at ud f
 ### Opgave g 
 *Angiv formlen for et 95% konfidensinterval for middelværiden af logoritmen til BMI for hele befolkningen. Indsæt tal og bereng intervallet. Angiv derefter et 95% konfidensinterval for medianen af BMI for hele befolkningen.*
 
+Det første der skal gøres er at skrive den ønskede formål op og derefter få den udfyldt med de forskellige tal ved at bruge R. Den nedenstående formel bruges til at finde konfidensintervallet på 95%.
+
 $$\bar x \pm t_{0.975} \cdot \frac{\sigma}{\sqrt n}$$
 ```{r include=FALSE}
-mean(D$logbmi)+(qt(0.975,length(D$logbmi)-1))*(sd(D$logbmi)/sqrt(145))
-mean(D$logbmi)-(qt(0.975,length(D$logbmi)-1))*(sd(D$logbmi)/sqrt(145))
+plusLogBMI <- mean(D$logbmi)+(qt(0.975,length(D$logbmi)-1))*(sd(D$logbmi)/sqrt(145))
+minusLogbmi <- mean(D$logbmi)-(qt(0.975,length(D$logbmi)-1))*(sd(D$logbmi)/sqrt(145))
 
 exp(mean(D$logbmi))
+
+plusBmi <- exp(plusLogBMI)
+minusBmi <- exp(minusLogbmi)
 ```
+
+Dette gør at vi kan beregne hvad disse 2 tal er ved at bruge R hvilket giver det følgende resultat: 
 
 Middelværiden blev tidligere regnet ud til: `r logmeanbmi`
 
 Dette gør at vores t-fordelings 97,5% kvartil til: `r qt(0.975, length(D$logbmi))`
 
 $$ 3.28 \pm 1.977 \cdot \frac{0.149}{\sqrt{145}} $$
-Hvilket giver resultatet: 
+Her er det vigtigt at udpege at vi regner med de logoritmiske værdier. Dette er ikke hvad der skal arbejdes med. Grundet dette bliver de endelige værdier oplytet i e som følgende.
+
+$e^{`r round(logmeanbmi, 3)`} = `r round(exp(logmeanbmi),2)`$
+
+Resultatet uden at oplyte det i e: 
 $$[3.24,3.19]$$
+Resultatet efter at den er blevet oplytet i e: 
+
+$[e^{`r round(plusLogBMI, 3)`}, e^{`r round(plusLogBMI, 3)`}] = [`r round(plusBmi,2)`, `r round(minusBmi,2)`]$ 
+
 ### Opgave h 
 *Udfør en hypotese test med henblik på at undersøge, om middelværdien af logoritmen til BMI er forsekllige fra log(25). Dette kan gøres ved at teste følgende hypotese: *
 
@@ -361,9 +387,9 @@ Korrelationskeoficient_weightfast
 ```{r echo=FALSE}
 layout(matrix(c(1,2,3), 1,3))
 
-plot(D$bmi, D$weight, main = "Plot Between BMI and Weight", xlab="BMI", ylab = "Weight", pch = 19, frame = FALSE)
-plot(D$bmi, D$fastfood, main = "Plot Between BMI and Fastfood", xlab="BMI", ylab = "Fastfood", pch = 19, frame = FALSE)
-plot(D$weight, D$fastfood, main = "Plot Between Weight and Fastfood", xlab="Weight", ylab = "Fastfood", pch = 19, frame = FALSE)
+plot(D$bmi, D$weight, main = "BMI and Weight", xlab="BMI", ylab = "Weight", pch = 19, frame = FALSE)
+plot(D$bmi, D$fastfood, main = "BMI and Fastfood", xlab="BMI", ylab = "Fastfood", pch = 19, frame = FALSE)
+plot(D$weight, D$fastfood, main = "Weight and Fastfood", xlab="Weight", ylab = "Fastfood", pch = 19, frame = FALSE)
 ```
 Som man kan se på de 3 plot der er blevet lavet er der kun en korrelation mellem Vægt og BMI dette kan man også se hvis man regner tallene ud med de 2 ovenstående formler. Hvis man gør det får man følgende:
 
