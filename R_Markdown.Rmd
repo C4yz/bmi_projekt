@@ -311,8 +311,22 @@ v
 
 Ja det ville man godt kunne sige ud fra konfidensintervallerne alene. Dette er fordi hvis man kigger på det laveste inteveste interval for mænd er det stadig højere end det højeste interval for kvinder. Dette betyder at man kan konkludere at der ikke er nogen overlapning mellem mænd og kvinders BMI. 
 
-```{r}
+```{r echo=FALSE}
+bmiData <- D %>%
+  group_by(gender) %>%
+  summarize (meanbmi = mean(bmi), sdbmi = sd(bmi), countbmi=n(), sebmi = (sdbmi/(sqrt(countbmi))))
 
+bmiData[["gender"]] <- c("Female", "Male")
+
+bmiPlot <- ggplot(bmiData, aes(x=gender, y=meanbmi, fill=gender)) +
+  geom_bar(stat = "identity", position = position_dodge())  +
+  geom_errorbar(aes(ymin=meanbmi-sebmi, ymax=meanbmi+sebmi), width = .2) +
+  scale_fill_manual(values=c('red','blue'), guide=FALSE) +
+  labs(x="Køn", y="BMI") + 
+  coord_cartesian(ylim=c(20,27)) +
+  theme_classic()
+
+bmiPlot
 ```
 
 ## Korrelation 
